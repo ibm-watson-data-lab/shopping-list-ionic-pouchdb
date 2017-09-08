@@ -3,23 +3,60 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Hello Ionic</ion-title>
+    <ion-title>All Shopping Lists</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addList($event)">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
 
-  <h3>Welcome to your first Ionic app!</h3>
+  <h3>Welcome to the Shopping List app</h3>
 
-  <p>
-    This starter project is our way of helping you get a functional app running in record time.
-  </p>
-  <p>
-    Follow along on the tutorial section of the Ionic docs!
-  </p>
-  <p>
-    <button ion-button color="primary" menuToggle>Toggle Menu</button>
-  </p>
+  <ion-card *ngFor="let card of cards_of_shopping_lists" >
+
+    <ion-item>
+
+
+      <button ion-button icon-only item-start (click)="listTapped($event, card)">
+        <ion-icon name="cart"></ion-icon>
+      </button>
+ 
+    <ion-card-title>  
+      {{card.list_title}}
+    </ion-card-title>
+
+    
+      <button ion-button outline item-end (click)="removeList($event, card)" icon-only danger>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+
+    </ion-item>
+
+    <ion-card-content>
+         
+    <p>
+      {{card.sub_title}}
+    </p>
+
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col>
+
+        <ion-item>
+          <ion-label> Items checked</ion-label>
+          <ion-checkbox color="dark"></ion-checkbox>
+        </ion-item>    
+
+      </ion-col>
+    </ion-row>
+  </ion-card>
 
 </ion-content>
