@@ -14,6 +14,22 @@ export class HelloIonicPage {
    db: any;
    remote_db: any;
 
+   getItemsCount(all_items) {
+	   return Object.keys(all_items).length;
+   }
+
+   getCheckedItemsCount(all_items) {
+   		var count = 0;
+   		for (var key in all_items) {
+	  		if (all_items.hasOwnProperty(key)) {
+	  			if (all_items[key].checked === true) {
+	  				count++;
+	  			}
+	  		}
+	  	}
+	  	return count;
+   }
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
 
 
@@ -77,7 +93,7 @@ export class HelloIonicPage {
   	 					_id: data.list_title.toLowerCase(),
   	 					list_title: data.list_title,
   	 					sub_title: data.sub_title,
-  	 					all_items: []
+  	 					all_items: {}
   	 				};
   	 				this.cards_of_shopping_lists.push(card_);
   	 				this.db.put(card_).then(function(response) {

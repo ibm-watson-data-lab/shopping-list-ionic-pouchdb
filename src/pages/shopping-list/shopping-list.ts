@@ -23,17 +23,18 @@ export class ShoppingListPage {
 
   private updateListInDB() {
   	return this.db.put({
-		  	 	 _id: this.shopping_list._id,
-		  	 	 _rev: this.shopping_list._rev,
- 				 list_title: this.shopping_list.list_title,
- 				 sub_title: this.shopping_list.sub_title,
- 				 all_items: this.shopping_list.all_items
- 				}).then(response => {
+			  	 	 _id: this.shopping_list._id,
+			  	 	 _rev: this.shopping_list._rev,
+	 				 list_title: this.shopping_list.list_title,
+	 				 sub_title: this.shopping_list.sub_title,
+	 				 all_items: this.shopping_list.all_items
+	 			}).then(response => {
  					this.shopping_list._rev = response.rev;
  				}).catch(err => {
  					console.log(err);
  				});
   }
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
 
@@ -47,10 +48,14 @@ export class ShoppingListPage {
 
   	
   	this.db.get(list_id).then(doc => {
-								  // handle doc
-								  doc.all_items.forEach(item => {
-								  	this.shopping_items.push(item.name)
-								  });
+								  /* handle doc */
+
+								  for (var key in doc.all_items) {
+								  		if (doc.all_items.hasOwnProperty(key)) {
+								  			var item_name = doc.all_items[key].name
+								  			this.shopping_items.push(item_name)
+								  		}
+								  	}
 
 								  /* sync PouchDB with CouchDB. The live attribute indicates that the remote database should be updated 
 							  		 whenever a change is made in the local database */
@@ -85,12 +90,17 @@ export class ShoppingListPage {
   	 		{
   	 			text: 'Add',
   	 			handler: data=> {
+  	 				/* does not handle duplicates - will need extra code to disallow duplicates */
+
+  	 				let id_item_name = data.title.toLowerCase();
   	 				var item_ = {
-  	 					_id: data.title.toLowerCase(),
-  	 					name: data.title
+  	 					_id: id_item_name,
+  	 					name: data.title,
+  	 					checked : false
   	 				};
+
   	 				this.shopping_items.push(data.title);
-  	 				this.shopping_list.all_items.push(item_)
+  	 				this.shopping_list.all_items[id_item_name] = item_
   	 				
   	 				this.updateListInDB();		  	 			
   	 			}
@@ -102,16 +112,28 @@ export class ShoppingListPage {
   	 prompt.present();
   }
 
-  removeItem(item) {
+  removeItem($event, item) {
+  	/* item is of string type */
 
  	let index = this.shopping_items.indexOf(item);
   	if (index > -1) {
 		this.shopping_items.splice(index, 1);
 	 }
 
-	this.shopping_list.all_items = this.shopping_items;
+	 var item_id = item.toLowerCase();
+	 delete this.shopping_list.all_items[item_id]
+
 	this.updateListInDB();
 
+  }
+
+  updateCheck(event : any, item) {
+
+	let checked_now  = event.checked;
+	let item_id = item.toLowerCase();
+
+	this.shopping_list.all_items[item_id].checked = checked_now;
+  	this.updateListInDB();
   }
 
   ionViewDidLoad() {

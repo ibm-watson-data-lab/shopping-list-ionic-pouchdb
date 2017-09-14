@@ -29,9 +29,9 @@
   <ion-list>
     <ion-item *ngFor="let item of shopping_items">
       <ion-label>{{item}}</ion-label>
-      <ion-checkbox color="dark"></ion-checkbox>
+      <ion-checkbox color="dark" checked="{{ shopping_list.all_items[item.toLowerCase()].checked }}" (ionChange)='updateCheck($event, item)'></ion-checkbox>
 
-      	<button ion-button outline item-end (click)="removeItem(item)" icon-only danger>
+      	<button ion-button outline item-end (click)="removeItem($event, item)" icon-only danger>
       		<ion-icon name="trash"></ion-icon>
       	</button>
 

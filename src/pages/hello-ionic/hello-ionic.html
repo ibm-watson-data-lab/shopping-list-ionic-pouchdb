@@ -51,7 +51,7 @@
       <ion-col>
 
         <ion-item>
-          <ion-label> Items checked</ion-label>
+          <ion-label> {{getCheckedItemsCount(card.all_items)}} items checked out of {{getItemsCount(card.all_items)}} </ion-label>
           <ion-checkbox color="dark"></ion-checkbox>
         </ion-item>    
 
