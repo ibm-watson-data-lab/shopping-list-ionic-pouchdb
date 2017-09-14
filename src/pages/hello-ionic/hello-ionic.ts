@@ -95,9 +95,11 @@ export class HelloIonicPage {
   	 					sub_title: data.sub_title,
   	 					all_items: {}
   	 				};
-  	 				this.cards_of_shopping_lists.push(card_);
-  	 				this.db.put(card_).then(function(response) {
+  	 				this.db.put(card_).then(response => {
+  	 					let _rev = response.rev;
+  	 					card_['_rev'] = _rev;
 
+	  	 				this.cards_of_shopping_lists.push(card_);
   	 				}).catch(function (err) {
   	 					console.log(err);
   	 				});
