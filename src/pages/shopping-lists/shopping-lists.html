@@ -16,9 +16,6 @@
 
 
 <ion-content padding>
-
-  <h3>Welcome to the Shopping List app</h3>
-
   <ion-card *ngFor="let list of shopping_lists" >
     <ion-item>
       <button ion-button icon-only item-start (click)="listTapped($event, list)">
@@ -37,5 +34,4 @@
     </p>
     </ion-card-content>
   </ion-card>
-
 </ion-content>
