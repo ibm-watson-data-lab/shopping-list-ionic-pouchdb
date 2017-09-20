@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Shopping Lists</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addList($event)">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card *ngFor="let list of shopping_lists" >
+    <ion-item>
+      <button ion-button icon-only item-start (click)="listTapped($event, list)">
+        <ion-icon name="cart"></ion-icon>
+      </button>
+    <ion-card-title>  
+      {{list.list.title}}
+    </ion-card-title>
+      <button ion-button outline item-end (click)="removeList($event, list)" icon-only danger>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+    </ion-item>
+    <ion-card-content>
+    <p>
+      {{getItemsChecked(list)}}
+    </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
