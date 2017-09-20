@@ -2,8 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 
 import { Platform, MenuController, Nav } from 'ionic-angular';
 
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ListPage } from '../pages/list/list';
+import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
 import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { SettingsPage } from '../pages/settings/settings';
 
@@ -17,8 +16,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  // make HelloIonicPage the root (or first) page
-  rootPage = HelloIonicPage;
+  rootPage = ShoppingListsPage;
   pages: Array<{title: string, component: any}>;
 
   constructor(
@@ -31,8 +29,7 @@ export class MyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'My Shopping Lists', component: HelloIonicPage },
-      { title: 'My First List', component: ListPage },
+      { title: 'Shopping Lists', component: ShoppingListsPage },
       { title: 'Settings', component: SettingsPage }
     ];
   }

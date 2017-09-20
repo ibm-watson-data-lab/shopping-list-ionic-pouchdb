@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>All Shopping Lists</ion-title>
+    <ion-title>Shopping Lists</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="addList($event)">
@@ -19,44 +19,23 @@
 
   <h3>Welcome to the Shopping List app</h3>
 
-  <ion-card *ngFor="let card of cards_of_shopping_lists" >
-
+  <ion-card *ngFor="let list of shopping_lists" >
     <ion-item>
-
-
-      <button ion-button icon-only item-start (click)="listTapped($event, card)">
+      <button ion-button icon-only item-start (click)="listTapped($event, list)">
         <ion-icon name="cart"></ion-icon>
       </button>
- 
     <ion-card-title>  
-      {{card.list_title}}
+      {{list.list.title}}
     </ion-card-title>
-
-    
-      <button ion-button outline item-end (click)="removeList($event, card)" icon-only danger>
+      <button ion-button outline item-end (click)="removeList($event, list)" icon-only danger>
           <ion-icon name="trash"></ion-icon>
         </button>
-
     </ion-item>
-
     <ion-card-content>
-         
     <p>
-      {{card.sub_title}}
+      {{getItemsChecked(list)}}
     </p>
-
     </ion-card-content>
-
-    <ion-row>
-      <ion-col>
-
-        <ion-item>
-          <ion-label> {{getCheckedItemsCount(card.all_items)}} items checked out of {{getItemsCount(card.all_items)}} </ion-label>
-          <ion-checkbox color="dark"></ion-checkbox>
-        </ion-item>    
-
-      </ion-col>
-    </ion-row>
   </ion-card>
 
 </ion-content>

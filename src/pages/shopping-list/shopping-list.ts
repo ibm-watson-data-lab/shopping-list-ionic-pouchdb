@@ -43,8 +43,8 @@ export class ShoppingListPage {
 
   	this.shopping_items = [];
 
-  	this.db = new PouchDB('shopping_list_database');
-  	this.remote_db = new PouchDB('https://7a6348b8-e252-4d60-a6d8-e0d61ce553df-bluemix:d2df958144dfb6089a788e8f1a501b603046e0d2fe8fd566a9e04eeb5d393105@7a6348b8-e252-4d60-a6d8-e0d61ce553df-bluemix.cloudant.com/shopping_db');
+  	this.db = new PouchDB('shopping-list');
+  	this.remote_db = new PouchDB('http://admin:pass@192.168.1.70:35984/shopping-list-ionic');
 
   	
   	this.db.get(list_id).then(doc => {

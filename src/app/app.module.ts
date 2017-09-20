@@ -3,9 +3,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ItemDetailsPage } from '../pages/item-details/item-details';
-import { ListPage } from '../pages/list/list';
+import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
 import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { SettingsPage } from '../pages/settings/settings';
 
@@ -15,9 +13,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 @NgModule({
   declarations: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
+    ShoppingListsPage,
     ShoppingListPage,
     SettingsPage
   ],
@@ -28,9 +24,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
+    ShoppingListsPage,
     ShoppingListPage,
     SettingsPage
   ],
