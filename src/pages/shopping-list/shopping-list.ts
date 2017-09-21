@@ -14,7 +14,19 @@ export class ShoppingListPage {
   
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public dbProvider: DbProvider) {
 	  this.list = navParams.get('list');
-	  this.dbProvider.loadActiveItems(this.list._id).then(items => {
+	  this.dbProvider.sync().subscribe(
+      (data) => this.loadItems(),
+      (err) => console.log(err),
+      () => {}
+    );
+  }
+
+  ionViewWillEnter() {
+    this.loadItems();
+  }
+
+  loadItems() {
+    this.dbProvider.loadActiveItems(this.list._id).then(items => {
       this.items = items;
     });
   }

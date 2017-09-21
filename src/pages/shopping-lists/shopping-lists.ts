@@ -9,12 +9,24 @@ import { DbProvider } from '../../providers/db/db'
 })
 export class ShoppingListsPage {
 
-  shopping_lists: any[] = [];
+  lists: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public dbProvider: DbProvider) {
+    this.dbProvider.sync().subscribe(
+      (data) => this.loadLists(),
+      (err) => console.log(err),
+      () => {}
+    );
+  }
+
+  ionViewWillEnter() {
+    this.loadLists();
+  }
+
+  loadLists() {
     this.dbProvider.loadLists().then(listMetas => {
-      this.shopping_lists = listMetas;
-    })
+      this.lists = listMetas;
+    });
   }
 
   getItemsChecked(list) {
@@ -53,7 +65,7 @@ export class ShoppingListsPage {
           text: 'Add',
           handler: data => {
             this.dbProvider.addList(data.title).then(list => {
-              this.shopping_lists.push({ listId: list._id, list: list, itemCount: 0, itemCheckedCount: 0, items: [] });
+              this.lists.push({ listId: list._id, list: list, itemCount: 0, itemCheckedCount: 0, items: [] });
             }).catch(err => {
               console.log(err);
             });
@@ -66,11 +78,11 @@ export class ShoppingListsPage {
 
   removeList(event, listMeta) {
     this.dbProvider.deleteList(listMeta.list).then(list => {
-      let index = this.shopping_lists.findIndex((lm, i) => {
+      let index = this.lists.findIndex((lm, i) => {
         return lm.list._id === list._id
       });
       if (index > -1) {
-        this.shopping_lists.splice(index, 1);
+        this.lists.splice(index, 1);
       }
     }).catch(function (err) {
       console.log(err);

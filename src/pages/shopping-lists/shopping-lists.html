@@ -16,7 +16,7 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let list of shopping_lists" >
+  <ion-card *ngFor="let list of lists" >
     <ion-item>
       <button ion-button icon-only item-start (click)="listTapped($event, list)">
         <ion-icon name="cart"></ion-icon>

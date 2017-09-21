@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import { ShoppingListFactory, ShoppingListRepositoryPouchDB } from 'ibm-shopping-list-model'
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
@@ -10,6 +11,7 @@ export class DbProvider {
   remoteDb: any;
   shoppingListFactory: any;
   shoppingListRepository: any;
+  syncSubject: Subject<any>;
  
   constructor() {
     PouchDB.plugin(PouchDBFind);
@@ -17,12 +19,22 @@ export class DbProvider {
     this.remoteDb = new PouchDB('http://admin:pass@192.168.1.70:35984/shopping-list-ionic');
     this.shoppingListFactory = new ShoppingListFactory(); 
     this.shoppingListRepository = new ShoppingListRepositoryPouchDB(this.db);
+    this.shoppingListRepository.ensureIndexes();
+    this.syncSubject = new Subject();
     this.db.sync(this.remoteDb, {
     	live:true,
     	retry:true
-    }).on('change', function (change) {
-    }).on('error', function (err) {
+    }).on('change', (change) => {
+      if (change.direction == "pull") {
+        this.syncSubject.next(change);
+      }
+    }).on('error', (err) => {
+      this.syncSubject.next(err);
     });
+  }
+
+  sync() {
+    return this.syncSubject;
   }
  
   loadLists() {
@@ -110,5 +122,4 @@ export class DbProvider {
         return this.shoppingListRepository.deleteItem(item);
       });
   }
-
 }
