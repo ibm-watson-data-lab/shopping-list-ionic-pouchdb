@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db'
 
@@ -12,10 +12,10 @@ export class ShoppingListPage {
   list: any;
   items: any[];
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public dbProvider: DbProvider) {
-	  this.list = navParams.get('list');
-	  this.dbProvider.sync().subscribe(
-      (data) => this.loadItems(),
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public dbProvider: DbProvider, private zone: NgZone) {
+    this.list = navParams.get('list');
+    this.dbProvider.sync().subscribe(
+      (data) => this.zone.run(() => this.loadItems()),
       (err) => console.log(err),
       () => {}
     );
@@ -23,10 +23,12 @@ export class ShoppingListPage {
 
   ionViewWillEnter() {
     this.loadItems();
+    
   }
 
   loadItems() {
     this.dbProvider.loadActiveItems(this.list._id).then(items => {
+      console.log(this.items);
       this.items = items;
     });
   }

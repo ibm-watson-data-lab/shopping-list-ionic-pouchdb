@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { ShoppingListPage } from '../../pages/shopping-list/shopping-list'
 import { DbProvider } from '../../providers/db/db'
@@ -11,9 +11,9 @@ export class ShoppingListsPage {
 
   lists: any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public dbProvider: DbProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public dbProvider: DbProvider, private zone: NgZone) {
     this.dbProvider.sync().subscribe(
-      (data) => this.loadLists(),
+      (data) => this.zone.run(() => this.loadLists()),
       (err) => console.log(err),
       () => {}
     );

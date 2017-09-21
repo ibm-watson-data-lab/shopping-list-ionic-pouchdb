@@ -9,6 +9,8 @@ export class DbProvider {
  
   db: any;
   remoteDb: any;
+  //remoteDbUrl: String = 'http://admin:pass@192.168.1.70:35984/shopping-list';
+  remoteDbUrl: String = 'http://admin:pass@9.24.7.248:35984/shopping-list';
   shoppingListFactory: any;
   shoppingListRepository: any;
   syncSubject: Subject<any>;
@@ -16,7 +18,7 @@ export class DbProvider {
   constructor() {
     PouchDB.plugin(PouchDBFind);
     this.db = new PouchDB('shopping-list');
-    this.remoteDb = new PouchDB('http://admin:pass@192.168.1.70:35984/shopping-list-ionic');
+    this.remoteDb = new PouchDB(this.remoteDbUrl);
     this.shoppingListFactory = new ShoppingListFactory(); 
     this.shoppingListRepository = new ShoppingListRepositoryPouchDB(this.db);
     this.shoppingListRepository.ensureIndexes();
