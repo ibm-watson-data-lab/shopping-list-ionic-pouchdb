@@ -5,12 +5,12 @@ import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 
 @Injectable()
-export class DbProvider {
+export class DatastoreProvider {
  
   db: any;
   remoteDb: any;
-  remoteDbUrl: String = 'http://admin:pass@192.168.1.70:35984/shopping-list';
-  //remoteDbUrl: String = 'http://admin:pass@9.24.7.248:35984/shopping-list';
+  //remoteDbUrl: String = 'http://admin:pass@192.168.1.70:35984/shopping-list';
+  remoteDbUrl: String = 'http://admin:pass@9.24.7.248:35984/shopping-list';
   shoppingListFactory: any;
   shoppingListRepository: any;
   syncSubject: Subject<any>;

@@ -9,7 +9,7 @@ import { SettingsPage } from '../pages/settings/settings';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { DbProvider } from '../providers/db/db';
+import { DatastoreProvider } from '../providers/datastore/datastore';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { DbProvider } from '../providers/db/db';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DbProvider
+    DatastoreProvider
   ]
 })
 export class AppModule {}

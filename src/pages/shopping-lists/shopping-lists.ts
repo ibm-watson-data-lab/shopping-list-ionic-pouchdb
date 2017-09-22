@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { ShoppingListPage } from '../../pages/shopping-list/shopping-list'
-import { DbProvider } from '../../providers/db/db'
+import { DatastoreProvider } from '../../providers/datastore/datastore'
 
 @Component({
   selector: 'page-shopping-lists',
@@ -11,8 +11,8 @@ export class ShoppingListsPage {
 
   lists: any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public dbProvider: DbProvider, private zone: NgZone) {
-    this.dbProvider.sync().subscribe(
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public datastoreProvider: DatastoreProvider, private zone: NgZone) {
+    this.datastoreProvider.sync().subscribe(
       (data) => this.zone.run(() => this.loadLists()),
       (err) => console.log(err),
       () => {}
@@ -24,7 +24,7 @@ export class ShoppingListsPage {
   }
 
   loadLists() {
-    this.dbProvider.loadLists().then(listMetas => {
+    this.datastoreProvider.loadLists().then(listMetas => {
       this.lists = listMetas;
     });
   }
@@ -64,7 +64,7 @@ export class ShoppingListsPage {
         {
           text: 'Add',
           handler: data => {
-            this.dbProvider.addList(data.title).then(list => {
+            this.datastoreProvider.addList(data.title).then(list => {
               this.lists.push({ listId: list._id, list: list, itemCount: 0, itemCheckedCount: 0, items: [] });
             }).catch(err => {
               console.log(err);
@@ -77,7 +77,7 @@ export class ShoppingListsPage {
   }
 
   removeList(event, listMeta) {
-    this.dbProvider.deleteList(listMeta.list).then(list => {
+    this.datastoreProvider.deleteList(listMeta.list).then(list => {
       let index = this.lists.findIndex((lm, i) => {
         return lm.list._id === list._id
       });
