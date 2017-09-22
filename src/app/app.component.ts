@@ -3,7 +3,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, MenuController, Nav } from 'ionic-angular';
 
 import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
-import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { SettingsPage } from '../pages/settings/settings';
 
 import { StatusBar } from '@ionic-native/status-bar';
