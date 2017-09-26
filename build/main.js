@@ -432,7 +432,7 @@ var DatastoreProvider = (function () {
     DatastoreProvider.prototype.applySyncUrl = function (syncUrl, updateDB) {
         var _this = this;
         if (syncUrl != this.activeSyncUrl) {
-            if (!updateDB) {
+            if (updateDB) {
                 if (this.settingsDoc == null) {
                     this.settingsDoc = {
                         _id: 'settings',
