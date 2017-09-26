@@ -1,13 +1,13 @@
 webpackJsonp([2],{
 
-/***/ 108:
+/***/ 109:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShoppingListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_db_db__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_datastore_datastore__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -21,22 +21,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ShoppingListPage = (function () {
-    function ShoppingListPage(navCtrl, navParams, alertCtrl, dbProvider, zone) {
+    function ShoppingListPage(navCtrl, navParams, alertCtrl, datastoreProvider, zone) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.alertCtrl = alertCtrl;
-        this.dbProvider = dbProvider;
+        this.datastoreProvider = datastoreProvider;
         this.zone = zone;
         this.list = navParams.get('list');
-        this.dbProvider.sync().subscribe(function (data) { return _this.zone.run(function () { return _this.loadItems(); }); }, function (err) { return console.log(err); }, function () { });
+        this.datastoreProvider.sync().subscribe(function (data) { return _this.zone.run(function () { return _this.loadItems(); }); }, function (err) { return console.log(err); }, function () { });
     }
     ShoppingListPage.prototype.ionViewWillEnter = function () {
         this.loadItems();
     };
     ShoppingListPage.prototype.loadItems = function () {
         var _this = this;
-        this.dbProvider.loadActiveItems(this.list._id).then(function (items) {
+        this.datastoreProvider.loadActiveItems(this.list._id).then(function (items) {
             console.log(_this.items);
             _this.items = items;
         });
@@ -55,7 +55,7 @@ var ShoppingListPage = (function () {
                 {
                     text: 'Add',
                     handler: function (data) {
-                        _this.dbProvider.addItem(data.title, _this.list._id)
+                        _this.datastoreProvider.addItem(data.title, _this.list._id)
                             .then(function (item) {
                             _this.items.push(item);
                         });
@@ -67,7 +67,7 @@ var ShoppingListPage = (function () {
     };
     ShoppingListPage.prototype.removeItem = function (event, item) {
         var _this = this;
-        this.dbProvider.deleteItem(item)
+        this.datastoreProvider.deleteItem(item)
             .then(function (deletedItem) {
             var index = _this.items.indexOf(item);
             if (index > -1) {
@@ -77,7 +77,7 @@ var ShoppingListPage = (function () {
     };
     ShoppingListPage.prototype.updateItemChecked = function (event, item) {
         var _this = this;
-        this.dbProvider.toggleItemChecked(item)
+        this.datastoreProvider.toggleItemChecked(item)
             .then(function (newItem) {
             var index = _this.items.indexOf(item);
             if (index > -1) {
@@ -92,20 +92,22 @@ ShoppingListPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'page-shopping-list',template:/*ion-inline-start:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/shopping-list/shopping-list.html"*/'<ion-header>\n  <ion-navbar>\n	<button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>{{list.title}}</ion-title>\n    <ion-buttons end>\n    	<button ion-button icon-only (click)="addItem()">\n    		<ion-icon name="add"></ion-icon>\n    	</button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <ion-item *ngFor="let item of items">\n      <ion-label>{{item.title}}</ion-label>\n      <ion-checkbox color="dark" checked="{{ item.checked }}" (ionChange)=\'updateItemChecked($event, item)\'></ion-checkbox>\n      	<button ion-button outline item-end (click)="removeItem($event, item)" icon-only danger>\n      		<ion-icon name="trash"></ion-icon>\n      	</button>\n    </ion-item>\n  </ion-list>\n</ion-content>'/*ion-inline-end:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/shopping-list/shopping-list.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2__providers_db_db__["a" /* DbProvider */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2__providers_datastore_datastore__["a" /* DatastoreProvider */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */]])
 ], ShoppingListPage);
 
 //# sourceMappingURL=shopping-list.js.map
 
 /***/ }),
 
-/***/ 109:
+/***/ 110:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shopping_lists_shopping_lists__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_datastore_datastore__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -117,35 +119,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-/**
- * Generated class for the SettingsPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
+
 var SettingsPage = (function () {
-    function SettingsPage(navCtrl, navParams) {
+    function SettingsPage(navCtrl, navParams, datastoreProvider) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.datastoreProvider = datastoreProvider;
+        this.syncUrl = "";
     }
     SettingsPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad SettingsPage');
+        this.syncUrl = this.datastoreProvider.activeSyncUrl;
+    };
+    SettingsPage.prototype.save = function () {
+        this.datastoreProvider.updateSyncUrl(this.syncUrl);
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_2__shopping_lists_shopping_lists__["a" /* ShoppingListsPage */]);
     };
     return SettingsPage;
 }());
 SettingsPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPage */])(),
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-settings',template:/*ion-inline-start:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/settings/settings.html"*/'<!--\n  Generated template for the SettingsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	 <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    \n    <ion-title>Settings</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/settings/settings.html"*/,
+        selector: 'page-settings',template:/*ion-inline-start:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/settings/settings.html"*/'<!--\n  Generated template for the SettingsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	 <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    \n    <ion-title>Settings</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n    <ion-label color="primary" stacked>Sync URL</ion-label>\n    <ion-input placeholder="Cloudant or CouchDB URL" [(ngModel)]="syncUrl"></ion-input>\n    <button ion-button full (click)="save()">Save</button>\n</ion-content>\n'/*ion-inline-end:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/settings/settings.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_datastore_datastore__["a" /* DatastoreProvider */]])
 ], SettingsPage);
 
 //# sourceMappingURL=settings.js.map
 
 /***/ }),
 
-/***/ 117:
+/***/ 118:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -158,11 +162,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 117;
+webpackEmptyAsyncContext.id = 118;
 
 /***/ }),
 
-/***/ 158:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -186,121 +190,8 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 158;
+webpackAsyncContext.id = 159;
 module.exports = webpackAsyncContext;
-
-/***/ }),
-
-/***/ 209:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShoppingListsPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_shopping_list_shopping_list__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_db_db__ = __webpack_require__(79);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var ShoppingListsPage = (function () {
-    function ShoppingListsPage(navCtrl, navParams, alertCtrl, dbProvider, zone) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.alertCtrl = alertCtrl;
-        this.dbProvider = dbProvider;
-        this.zone = zone;
-        this.lists = [];
-        this.dbProvider.sync().subscribe(function (data) { return _this.zone.run(function () { return _this.loadLists(); }); }, function (err) { return console.log(err); }, function () { });
-    }
-    ShoppingListsPage.prototype.ionViewWillEnter = function () {
-        this.loadLists();
-    };
-    ShoppingListsPage.prototype.loadLists = function () {
-        var _this = this;
-        this.dbProvider.loadLists().then(function (listMetas) {
-            _this.lists = listMetas;
-        });
-    };
-    ShoppingListsPage.prototype.getItemsChecked = function (list) {
-        var itemsString = '';
-        if (list.itemCount == 0) {
-            itemsString = '0 items';
-        }
-        else if (list.itemCount == 1) {
-            itemsString = "1 item " + (list.itemCheckedCount > 0 ? '' : 'un') + "checked.";
-        }
-        else {
-            itemsString = list.itemCheckedCount + " of " + list.itemCount + " items checked.";
-        }
-        return itemsString;
-    };
-    ShoppingListsPage.prototype.listTapped = function (event, listMeta) {
-        var list = listMeta.list;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__pages_shopping_list_shopping_list__["a" /* ShoppingListPage */], {
-            list: list
-        });
-    };
-    ShoppingListsPage.prototype.addList = function (event) {
-        var _this = this;
-        var prompt = this.alertCtrl.create({
-            title: 'Add New Shopping List',
-            inputs: [{
-                    name: 'title',
-                    placeholder: 'Name of shopping list'
-                }],
-            buttons: [
-                {
-                    text: 'Cancel'
-                },
-                {
-                    text: 'Add',
-                    handler: function (data) {
-                        _this.dbProvider.addList(data.title).then(function (list) {
-                            _this.lists.push({ listId: list._id, list: list, itemCount: 0, itemCheckedCount: 0, items: [] });
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
-                    }
-                }
-            ]
-        });
-        prompt.present();
-    };
-    ShoppingListsPage.prototype.removeList = function (event, listMeta) {
-        var _this = this;
-        this.dbProvider.deleteList(listMeta.list).then(function (list) {
-            var index = _this.lists.findIndex(function (lm, i) {
-                return lm.list._id === list._id;
-            });
-            if (index > -1) {
-                _this.lists.splice(index, 1);
-            }
-        }).catch(function (err) {
-            console.log(err);
-        });
-    };
-    return ShoppingListsPage;
-}());
-ShoppingListsPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-shopping-lists',template:/*ion-inline-start:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/shopping-lists/shopping-lists.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Shopping Lists</ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addList($event)">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-card *ngFor="let list of lists" >\n    <ion-item>\n      <button ion-button icon-only item-start (click)="listTapped($event, list)">\n        <ion-icon name="cart"></ion-icon>\n      </button>\n    <ion-card-title>  \n      {{list.list.title}}\n    </ion-card-title>\n      <button ion-button outline item-end (click)="removeList($event, list)" icon-only danger>\n          <ion-icon name="trash"></ion-icon>\n        </button>\n    </ion-item>\n    <ion-card-content>\n    <p>\n      {{getItemsChecked(list)}}\n    </p>\n    </ion-card-content>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/shopping-lists/shopping-lists.html"*/
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_3__providers_db_db__["a" /* DbProvider */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */]])
-], ShoppingListsPage);
-
-//# sourceMappingURL=shopping-lists.js.map
 
 /***/ }),
 
@@ -327,12 +218,12 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__(289);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_shopping_lists_shopping_lists__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_shopping_list_shopping_list__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_settings_settings__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_shopping_lists_shopping_lists__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_shopping_list_shopping_list__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_settings_settings__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_status_bar__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_splash_screen__ = __webpack_require__(213);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_db_db__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_datastore_datastore__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -382,7 +273,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__ionic_native_status_bar__["a" /* StatusBar */],
             __WEBPACK_IMPORTED_MODULE_8__ionic_native_splash_screen__["a" /* SplashScreen */],
             { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
-            __WEBPACK_IMPORTED_MODULE_9__providers_db_db__["a" /* DbProvider */]
+            __WEBPACK_IMPORTED_MODULE_9__providers_datastore_datastore__["a" /* DatastoreProvider */]
         ]
     })
 ], AppModule);
@@ -398,8 +289,8 @@ AppModule = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_shopping_lists_shopping_lists__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_settings_settings__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_shopping_lists_shopping_lists__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_settings_settings__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(213);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -465,11 +356,11 @@ MyApp = __decorate([
 
 /***/ }),
 
-/***/ 79:
+/***/ 46:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DbProvider; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatastoreProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__);
@@ -491,32 +382,84 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var DbProvider = (function () {
-    function DbProvider() {
+var DatastoreProvider = (function () {
+    function DatastoreProvider() {
         var _this = this;
-        this.remoteDbUrl = 'http://admin:pass@192.168.1.70:35984/shopping-list';
         __WEBPACK_IMPORTED_MODULE_3_pouchdb__["a" /* default */].plugin(__WEBPACK_IMPORTED_MODULE_4_pouchdb_find__["a" /* default */]);
-        this.db = new __WEBPACK_IMPORTED_MODULE_3_pouchdb__["a" /* default */]('shopping-list');
-        this.remoteDb = new __WEBPACK_IMPORTED_MODULE_3_pouchdb__["a" /* default */](this.remoteDbUrl);
+        this.settingsDB = new __WEBPACK_IMPORTED_MODULE_3_pouchdb__["a" /* default */]('settings');
+        this.shoppingListDB = new __WEBPACK_IMPORTED_MODULE_3_pouchdb__["a" /* default */]('shopping-list');
         this.shoppingListFactory = new __WEBPACK_IMPORTED_MODULE_2_ibm_shopping_list_model__["ShoppingListFactory"]();
-        this.shoppingListRepository = new __WEBPACK_IMPORTED_MODULE_2_ibm_shopping_list_model__["ShoppingListRepositoryPouchDB"](this.db);
+        this.shoppingListRepository = new __WEBPACK_IMPORTED_MODULE_2_ibm_shopping_list_model__["ShoppingListRepositoryPouchDB"](this.shoppingListDB);
         this.shoppingListRepository.ensureIndexes();
-        this.syncSubject = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
-        this.db.sync(this.remoteDb, {
-            live: true,
-            retry: true
-        }).on('change', function (change) {
-            if (change.direction == "pull") {
-                _this.syncSubject.next(change);
+        this.activeSyncSubject = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
+        this.settingsDB.get('settings')
+            .then(function (doc) {
+            _this.settingsDoc = doc;
+            if (_this.settingsDoc) {
+                _this.applySyncUrl(_this.settingsDoc.syncUrl, false);
             }
-        }).on('error', function (err) {
-            _this.syncSubject.next(err);
+        }).catch(function (err) {
+            // TODO:
+            console.log(err);
         });
     }
-    DbProvider.prototype.sync = function () {
-        return this.syncSubject;
+    DatastoreProvider.prototype.sync = function () {
+        return this.activeSyncSubject;
     };
-    DbProvider.prototype.loadLists = function () {
+    DatastoreProvider.prototype.startSync = function () {
+        var _this = this;
+        if (this.activeSync) {
+            this.activeSync.cancel();
+            this.activeSync = null;
+        }
+        if (this.activeSyncUrl && this.activeSyncUrl.length > 0) {
+            var remoteDb = new __WEBPACK_IMPORTED_MODULE_3_pouchdb__["a" /* default */](this.activeSyncUrl);
+            this.activeSync = this.shoppingListDB.sync(remoteDb, {
+                live: true,
+                retry: true
+            }).on('change', function (change) {
+                if (change.direction == "pull") {
+                    _this.activeSyncSubject.next(change);
+                }
+            }).on('error', function (err) {
+                _this.activeSyncSubject.next(err);
+            });
+        }
+    };
+    DatastoreProvider.prototype.updateSyncUrl = function (syncUrl) {
+        this.applySyncUrl(syncUrl, true);
+    };
+    DatastoreProvider.prototype.applySyncUrl = function (syncUrl, updateDB) {
+        var _this = this;
+        if (syncUrl != this.activeSyncUrl) {
+            if (!updateDB) {
+                if (this.settingsDoc == null) {
+                    this.settingsDoc = {
+                        _id: 'settings',
+                        syncUrl: syncUrl
+                    };
+                }
+                else {
+                    this.settingsDoc["syncUrl"] = syncUrl;
+                }
+                this.settingsDB.put(this.settingsDoc)
+                    .then(function (response) {
+                    _this.activeSyncUrl = syncUrl;
+                    _this.settingsDoc._id = response.id;
+                    _this.settingsDoc._rev = response.rev;
+                    _this.startSync();
+                }).catch(function (err) {
+                    // TODO:
+                    console.log(err);
+                });
+            }
+            else {
+                this.activeSyncUrl = syncUrl;
+                this.startSync();
+            }
+        }
+    };
+    DatastoreProvider.prototype.loadLists = function () {
         var _this = this;
         var lists = [];
         var listItemPromises = [];
@@ -556,20 +499,20 @@ var DbProvider = (function () {
             return lists;
         });
     };
-    DbProvider.prototype.addList = function (title) {
+    DatastoreProvider.prototype.addList = function (title) {
         var list = this.shoppingListFactory.newShoppingList({
             title: title
         });
         return this.shoppingListRepository.put(list);
     };
-    DbProvider.prototype.deleteList = function (list) {
+    DatastoreProvider.prototype.deleteList = function (list) {
         var _this = this;
         return this.shoppingListRepository.get(list._id)
             .then(function (list) {
             return _this.shoppingListRepository.delete(list);
         });
     };
-    DbProvider.prototype.loadActiveItems = function (listId) {
+    DatastoreProvider.prototype.loadActiveItems = function (listId) {
         return this.shoppingListRepository.findItems({
             selector: {
                 type: "item",
@@ -580,7 +523,7 @@ var DbProvider = (function () {
             return Promise.resolve(items.toArray());
         });
     };
-    DbProvider.prototype.addItem = function (text, listId) {
+    DatastoreProvider.prototype.addItem = function (text, listId) {
         var _this = this;
         return this.shoppingListRepository.get(listId)
             .then(function (list) {
@@ -588,7 +531,7 @@ var DbProvider = (function () {
             return _this.shoppingListRepository.putItem(item);
         });
     };
-    DbProvider.prototype.toggleItemChecked = function (item) {
+    DatastoreProvider.prototype.toggleItemChecked = function (item) {
         var _this = this;
         var checked = !item.checked;
         return this.shoppingListRepository.getItem(item._id)
@@ -597,21 +540,134 @@ var DbProvider = (function () {
             return _this.shoppingListRepository.putItem(item);
         });
     };
-    DbProvider.prototype.deleteItem = function (item) {
+    DatastoreProvider.prototype.deleteItem = function (item) {
         var _this = this;
         return this.shoppingListRepository.getItem(item._id)
             .then(function (item) {
             return _this.shoppingListRepository.deleteItem(item);
         });
     };
-    return DbProvider;
+    return DatastoreProvider;
 }());
-DbProvider = __decorate([
+DatastoreProvider = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
     __metadata("design:paramtypes", [])
-], DbProvider);
+], DatastoreProvider);
 
-//# sourceMappingURL=db.js.map
+//# sourceMappingURL=datastore.js.map
+
+/***/ }),
+
+/***/ 86:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShoppingListsPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_shopping_list_shopping_list__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_datastore_datastore__ = __webpack_require__(46);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ShoppingListsPage = (function () {
+    function ShoppingListsPage(navCtrl, navParams, alertCtrl, datastoreProvider, zone) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.alertCtrl = alertCtrl;
+        this.datastoreProvider = datastoreProvider;
+        this.zone = zone;
+        this.lists = [];
+        this.datastoreProvider.sync().subscribe(function (data) { return _this.zone.run(function () { return _this.loadLists(); }); }, function (err) { return console.log(err); }, function () { });
+    }
+    ShoppingListsPage.prototype.ionViewWillEnter = function () {
+        this.loadLists();
+    };
+    ShoppingListsPage.prototype.loadLists = function () {
+        var _this = this;
+        this.datastoreProvider.loadLists().then(function (listMetas) {
+            _this.lists = listMetas;
+        });
+    };
+    ShoppingListsPage.prototype.getItemsChecked = function (list) {
+        var itemsString = '';
+        if (list.itemCount == 0) {
+            itemsString = '0 items';
+        }
+        else if (list.itemCount == 1) {
+            itemsString = "1 item " + (list.itemCheckedCount > 0 ? '' : 'un') + "checked.";
+        }
+        else {
+            itemsString = list.itemCheckedCount + " of " + list.itemCount + " items checked.";
+        }
+        return itemsString;
+    };
+    ShoppingListsPage.prototype.listTapped = function (event, listMeta) {
+        var list = listMeta.list;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__pages_shopping_list_shopping_list__["a" /* ShoppingListPage */], {
+            list: list
+        });
+    };
+    ShoppingListsPage.prototype.addList = function (event) {
+        var _this = this;
+        var prompt = this.alertCtrl.create({
+            title: 'Add New Shopping List',
+            inputs: [{
+                    name: 'title',
+                    placeholder: 'Name of shopping list'
+                }],
+            buttons: [
+                {
+                    text: 'Cancel'
+                },
+                {
+                    text: 'Add',
+                    handler: function (data) {
+                        _this.datastoreProvider.addList(data.title).then(function (list) {
+                            _this.lists.push({ listId: list._id, list: list, itemCount: 0, itemCheckedCount: 0, items: [] });
+                        }).catch(function (err) {
+                            console.log(err);
+                        });
+                    }
+                }
+            ]
+        });
+        prompt.present();
+    };
+    ShoppingListsPage.prototype.removeList = function (event, listMeta) {
+        var _this = this;
+        this.datastoreProvider.deleteList(listMeta.list).then(function (list) {
+            var index = _this.lists.findIndex(function (lm, i) {
+                return lm.list._id === list._id;
+            });
+            if (index > -1) {
+                _this.lists.splice(index, 1);
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
+    return ShoppingListsPage;
+}());
+ShoppingListsPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        selector: 'page-shopping-lists',template:/*ion-inline-start:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/shopping-lists/shopping-lists.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Shopping Lists</ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addList($event)">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-card *ngFor="let list of lists" >\n    <ion-item>\n      <button ion-button icon-only item-start (click)="listTapped($event, list)">\n        <ion-icon name="cart"></ion-icon>\n      </button>\n    <ion-card-title>  \n      {{list.list.title}}\n    </ion-card-title>\n      <button ion-button outline item-end (click)="removeList($event, list)" icon-only danger>\n          <ion-icon name="trash"></ion-icon>\n        </button>\n    </ion-item>\n    <ion-card-content>\n    <p>\n      {{getItemsChecked(list)}}\n    </p>\n    </ion-card-content>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/markwatson/dev/github/ibm-cds-labs/shopping-list-ionic-pouchdb/src/pages/shopping-lists/shopping-lists.html"*/
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_3__providers_datastore_datastore__["a" /* DatastoreProvider */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */]])
+], ShoppingListsPage);
+
+//# sourceMappingURL=shopping-lists.js.map
 
 /***/ })
 
