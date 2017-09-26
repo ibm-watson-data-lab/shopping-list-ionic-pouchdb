@@ -66,7 +66,7 @@ export class DatastoreProvider {
 
   applySyncUrl(syncUrl: string, updateDB: boolean) {
     if (syncUrl != this.activeSyncUrl) {
-      if (! updateDB) {
+      if (updateDB) {
         if (this.settingsDoc == null) {
           this.settingsDoc = {
             _id: 'settings',
