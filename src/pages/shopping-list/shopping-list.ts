@@ -23,7 +23,6 @@ export class ShoppingListPage {
 
   ionViewWillEnter() {
     this.loadItems();
-    
   }
 
   loadItems() {

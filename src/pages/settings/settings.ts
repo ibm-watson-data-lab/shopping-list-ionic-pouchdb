@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the SettingsPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { ShoppingListsPage } from '../shopping-lists/shopping-lists'
+import { DatastoreProvider } from '../../providers/datastore/datastore'
 
 @IonicPage()
 @Component({
@@ -15,11 +10,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  syncUrl: string = "";
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public datastoreProvider: DatastoreProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+    this.syncUrl = this.datastoreProvider.activeSyncUrl;
+  }
+
+  save() {
+    this.datastoreProvider.updateSyncUrl(this.syncUrl);
+    this.navCtrl.setRoot(ShoppingListsPage);
   }
 
 }

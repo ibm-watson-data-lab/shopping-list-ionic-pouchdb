@@ -6,46 +6,101 @@ import PouchDBFind from 'pouchdb-find';
 
 @Injectable()
 export class DatastoreProvider {
- 
-  db: any;
-  remoteDb: any;
-  //remoteDbUrl: String = 'http://admin:pass@192.168.1.70:35984/shopping-list';
-  remoteDbUrl: String = 'http://admin:pass@9.24.7.248:35984/shopping-list';
+
+  settingsDoc: any;
+  settingsDB: any;
+  shoppingListDB: any;
   shoppingListFactory: any;
   shoppingListRepository: any;
-  syncSubject: Subject<any>;
- 
+  activeSyncSubject: Subject<any>;
+  activeSync: any;
+  activeSyncUrl: string;
+
   constructor() {
     PouchDB.plugin(PouchDBFind);
-    this.db = new PouchDB('shopping-list');
-    this.remoteDb = new PouchDB(this.remoteDbUrl);
-    this.shoppingListFactory = new ShoppingListFactory(); 
-    this.shoppingListRepository = new ShoppingListRepositoryPouchDB(this.db);
+    this.settingsDB = new PouchDB('settings');
+    this.shoppingListDB = new PouchDB('shopping-list');
+    this.shoppingListFactory = new ShoppingListFactory();
+    this.shoppingListRepository = new ShoppingListRepositoryPouchDB(this.shoppingListDB);
     this.shoppingListRepository.ensureIndexes();
-    this.syncSubject = new Subject();
-    this.db.sync(this.remoteDb, {
-    	live:true,
-    	retry:true
-    }).on('change', (change) => {
-      if (change.direction == "pull") {
-        this.syncSubject.next(change);
-      }
-    }).on('error', (err) => {
-      this.syncSubject.next(err);
-    });
+    this.activeSyncSubject = new Subject();
+    this.settingsDB.get('settings')
+      .then((doc) => {
+        this.settingsDoc = doc;
+        if (this.settingsDoc) {
+          this.applySyncUrl(this.settingsDoc.syncUrl, false);
+        }
+      }).catch((err) => {
+        // TODO:
+        console.log(err);
+      });
   }
 
   sync() {
-    return this.syncSubject;
+    return this.activeSyncSubject;
   }
- 
+
+  startSync() {
+    if (this.activeSync) {
+      this.activeSync.cancel()
+      this.activeSync = null;
+    }
+    if (this.activeSyncUrl && this.activeSyncUrl.length > 0) {
+      const remoteDb = new PouchDB(this.activeSyncUrl);
+      this.activeSync = this.shoppingListDB.sync(remoteDb, {
+        live: true,
+        retry: true
+      }).on('change', (change) => {
+        if (change.direction == "pull") {
+          this.activeSyncSubject.next(change);
+        }
+      }).on('error', (err) => {
+        this.activeSyncSubject.next(err);
+      });
+    }
+  }
+
+  updateSyncUrl(syncUrl: string) {
+    this.applySyncUrl(syncUrl, true);
+  }
+
+  applySyncUrl(syncUrl: string, updateDB: boolean) {
+    if (syncUrl != this.activeSyncUrl) {
+      if (! updateDB) {
+        if (this.settingsDoc == null) {
+          this.settingsDoc = {
+            _id: 'settings',
+            syncUrl: syncUrl
+          }
+        }
+        else {
+          this.settingsDoc["syncUrl"] = syncUrl;
+        }
+        this.settingsDB.put(this.settingsDoc)
+          .then((response) => {
+            this.activeSyncUrl = syncUrl;
+            this.settingsDoc._id = response.id;
+            this.settingsDoc._rev = response.rev;
+            this.startSync();
+          }).catch(function (err) {
+            // TODO:
+            console.log(err);
+          });
+      }
+      else {
+        this.activeSyncUrl = syncUrl;
+        this.startSync();
+      }
+    }
+  }
+
   loadLists() {
     let lists = [];
     let listItemPromises = [];
     return this.shoppingListRepository.find()
       .then((allLists) => {
         for (let list of allLists.toArray()) {
-          lists.push({listId: list._id, list: list, itemCount: 0, itemCheckedCount: 0, items: []});
+          lists.push({ listId: list._id, list: list, itemCount: 0, itemCheckedCount: 0, items: [] });
           listItemPromises.push(this.shoppingListRepository.findItems({
             selector: {
               type: 'item',
@@ -77,7 +132,7 @@ export class DatastoreProvider {
 
   addList(title: String) {
     let list = this.shoppingListFactory.newShoppingList({
-        title: title
+      title: title
     });
     return this.shoppingListRepository.put(list);
   }
@@ -104,18 +159,18 @@ export class DatastoreProvider {
   addItem(text: String, listId: String) {
     return this.shoppingListRepository.get(listId)
       .then(list => {
-        let item = this.shoppingListFactory.newShoppingListItem({title: text}, list);
+        let item = this.shoppingListFactory.newShoppingListItem({ title: text }, list);
         return this.shoppingListRepository.putItem(item);
       });
   }
 
   toggleItemChecked(item) {
-      let checked = ! item.checked;
-      return this.shoppingListRepository.getItem(item._id)
-        .then(item => {
-          item = item.set('checked', checked);
-          return this.shoppingListRepository.putItem(item);
-       });
+    let checked = !item.checked;
+    return this.shoppingListRepository.getItem(item._id)
+      .then(item => {
+        item = item.set('checked', checked);
+        return this.shoppingListRepository.putItem(item);
+      });
   }
 
   deleteItem(item: any) {

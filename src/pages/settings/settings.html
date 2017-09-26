@@ -18,5 +18,7 @@
 
 
 <ion-content padding>
-
+    <ion-label color="primary" stacked>Sync URL</ion-label>
+    <ion-input placeholder="Cloudant or CouchDB URL" [(ngModel)]="syncUrl"></ion-input>
+    <button ion-button full (click)="save()">Save</button>
 </ion-content>
