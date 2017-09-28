@@ -16,22 +16,19 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let list of lists" >
+  <ion-card *ngFor="let list of lists" tappable (click)="listTapped($event, list)">
     <ion-item>
-      <button ion-button icon-only item-start (click)="listTapped($event, list)">
-        <ion-icon name="cart"></ion-icon>
-      </button>
-    <ion-card-title>  
-      {{list.list.title}}
-    </ion-card-title>
+      <ion-card-title>
+        {{list.list.title}}
+      </ion-card-title>
       <button ion-button outline item-end (click)="removeList($event, list)" icon-only danger>
           <ion-icon name="trash"></ion-icon>
         </button>
     </ion-item>
     <ion-card-content>
-    <p>
-      {{getItemsChecked(list)}}
-    </p>
+      <p>
+        {{getItemsChecked(list)}}
+      </p>
     </ion-card-content>
   </ion-card>
 </ion-content>

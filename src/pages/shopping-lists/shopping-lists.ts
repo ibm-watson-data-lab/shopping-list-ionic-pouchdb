@@ -77,6 +77,7 @@ export class ShoppingListsPage {
   }
 
   removeList(event, listMeta) {
+    event.stopPropagation();
     this.datastoreProvider.deleteList(listMeta.list).then(list => {
       let index = this.lists.findIndex((lm, i) => {
         return lm.list._id === list._id
